@@ -19,7 +19,7 @@
             return $this->marbles = $marbles;
         }
 
-        abstract public function lose();
-        abstract public function gain();
+        abstract public function lose($listEnnemis, $indexEnnemi, $name, $marbles, $marblesEnnemis, $malus);
+        abstract public function gain($name, $marbles, $marblesEnnemis, $gain);
     }
 ?>
