@@ -10,7 +10,7 @@
         // public car ne contient pas de donnée sensible
         // retourne l'âge de l'ennemi
         public function getAge(){
-            return $this->$age;
+            return $this->age;
         }
 
         // public car ne contient pas de donnée sensible
