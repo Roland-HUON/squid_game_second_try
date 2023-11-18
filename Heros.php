@@ -1,39 +1,53 @@
 <?php
+    // a besoin du fichier 'Characters.php' pour fonctionner correctement
     require_once 'Characters.php';
+    // class heros extends characters : enfant de la classe character et possède ses 
+    // caractéristiques
     class heros extends characters{
+        // définir les variables en privé
+        // car ne doit pas les communiqués
         private $gain;
         private $malus;
         private $screem_war;
 
+        //constructeur : défini les propriétés de la classe
         public function __construct($name, $marbles, $gain, $malus, $screem_war){
+            // prend le constructeur du parent
             parent::__construct($name, $marbles);
             $this->gain = $gain;
             $this->malus = $malus;
             $this->screem_war = $screem_war;
         }
 
+        // getter Gain : récupère le gain
         public function getGain(){
             return $this->gain;
         }
+        // getter Malus : récupère le malus
         public function getMalus(){
             return $this->malus;
         }
+        // getter ScreemWar : récupère le cri de victoire
         public function getScreemWar(){
             return $this->screem_war;
         }
         
         // fonction qui retourne la valeur de calcGain
-        // public car elle return et n'a pas les détails d'un calcul
+        // public car elle return la nouvelle valeur marble du joueur 
+        // et n'a pas les détails d'un calcul
         public function gain($name, $marbles, $marblesEnnemis, $gain){
             return $this->setMarbles($this->calcTotalGain($name, $marbles, $marblesEnnemis, $gain));
         }
-        // calcul du gain ne doit pas être dévoilé donc private
+        // calcul du gain accumulé ne doit pas être dévoilé donc private
         // dos de la télécommande, on veut pas que les gens
         // ont accès au détail -> private
         private function calcGain($name, $marbles, $marblesEnnemis, $gain){
             $calcGain = $marblesEnnemis + $gain;
             return $calcGain;
         }
+        // calcul du marbles du joueur après rencontre ne doit pas être dévoilé
+        // dos de la télécommande, on veut pas que les gens
+        // ont accès au détail -> private
         private function calcTotalGain($name, $marbles, $marblesEnnemis, $gain){
             echo "Le joueur " . $name . " a gagné " . $this->calcGain($name, $marbles, $marblesEnnemis, $gain) . " marbles.<br>";
             $marblesReste = $marbles + $this->calcGain($name, $marbles, $marblesEnnemis, $gain);
@@ -41,7 +55,8 @@
         }
 
         // fonction qui retourne la valeur de calcLose
-        // public car elle return et n'a pas les détails d'un calcul
+        // public car elle return la nouvelle valeur marble du joueur 
+        // et n'a pas les détails d'un calcul
         public function lose($listEnnemis, $indexEnnemi, $name, $marbles, $marblesEnnemis, $malus){
             return $this->setMarbles($this->calcTotalLose($name, $marbles, $marblesEnnemis, $malus));
         }
@@ -52,17 +67,23 @@
             $calcLose = $marblesEnnemis + $malus;
             return $calcLose;
         }
+        // calcul du marbles du joueur après rencontre ne doit pas être dévoilé
+        // dos de la télécommande, on veut pas que les gens
+        // ont accès au détail -> private
         private function calcTotalLose($name, $marbles, $marblesEnnemis, $malus){
             $marblesReste = $marbles - $this->calcLose($name, $marbles, $marblesEnnemis, $malus);
             echo "Le joueur " . $name . " a perdu " . $this->calcLose($name, $marbles, $marblesEnnemis, $malus) . " marbles.<br>";
             return $marblesReste;
         }
+        // function tricher, n'a pas de donnée sensible donc public
         public function cheat(
             $tableEnnemis, $indexEnnemis,
             $name, $marbles, $marblesEnnemis, 
             $gain){
+                // appelle méthode gain
                     $this->gain($name, $marbles, $marblesEnnemis, $gain);
-                    array_splice($tableEnnemis, $indexEnnemis,);
+                    // supprime ennemis
+                    array_splice($tableEnnemis, $indexEnnemis);
                     
         }
 
@@ -80,6 +101,8 @@
             // compareMarble (ennemi pair ou impair) concorde
             // si oui : gagner
             if ($destiny == $this->compareMarble($marblesEnnemis)){
+                // supprime ennemis
+                array_splice($listEnnemis, $indexEnnemis);
                 return $this->gain($name, $marbles, $marblesEnnemis, $gain);
                 // sinon : perdre
             } else {
